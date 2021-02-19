@@ -44,9 +44,10 @@ connect(
 
 
 
-module.exports = async function (req, res) {
+module.exports = async function (req, res , {params}) {
+    console.log(params)
   if (req.method === 'GET') {
-    User.find()
+    User.findById(params.id)
       .then(people => {
         res.status(200).json(people);
       })

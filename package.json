@@ -8,7 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.3.3",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
     "axios": "^0.21.1",
+    "framer-motion": "^3.6.0",
     "mongoose": "^5.11.17",
     "next": "^10.0.5",
     "react": "17.0.1",
