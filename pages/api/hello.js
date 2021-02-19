@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import { Schema, model, connect, exports } from 'mongoose';
 
 const uri = process.env.DB_URI
 
@@ -34,18 +34,22 @@ const userSchema = new Schema({
   },
 }, { timestamps: true });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 
-mongoose.connect(
+connect(
   uri,
-  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
-  function (error) { if (error) console.log("Error!" + error); }
-);
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
+)
 
-export default (req, res) => {
+
+
+module.exports = async function (req, res) {
   if (req.method === 'GET') {
-    User.find().then(users => { res.status(200).json(users); 
-    }).catch(error => res.status(500).json(error.message))
+    User.find()
+      .then(people => {
+        res.status(200).json(people);
+      })
+      .catch(error => res.status(500).json(error.message))
   }
-}
+};
