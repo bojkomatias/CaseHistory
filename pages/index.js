@@ -1,27 +1,40 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import Header from "../components/Header"
-import { Switch, useColorMode, Button} from "@chakra-ui/react"
+import PacientTable from "../components/PacientTable"
+import Footer from "../components/Footer"
+import { Box, Center, useColorModeValue, Flex, Spacer, Spinner, Container, cookieStorageManager } from "@chakra-ui/react"
+import { getSession, signIn, signOut, useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { addLocale } from 'next/dist/next-server/lib/router/router'
 
 
-export default function Home() {
 
-  function DarkMode() {
-    const { colorMode, toggleColorMode } = useColorMode()
-    return (
-        <Switch onChange={toggleColorMode} size="lg">
-          Toggle {colorMode === "light" ? "Dark" : "Light"}
-        </Switch>
-    )
-  }
+export default function Home({ pacc }) {
+  const router = useRouter()
+  const [session, loading] = useSession()
+
+  useEffect(() => {
+    if (!(session || loading)) {
+      router.push('/login')
+    }
+  }, [session, loading])
   return (
-    <div className={styles.container}>
+
+    <Box h='100vh' bgGradient={useColorModeValue('radial(white,gray.100)', 'radial(gray.700,gray.800)')}>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Case History</title>
+        <link rel="icon" href="/CaseHistory-Logo.png" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
-      <Header/>
-      <DarkMode/>
-    </div>
+      <Header />
+      <Container h='85vh' minW="100%" overflow='auto'>
+        {!session || loading ? <Center><Spinner mt='36' size="xl" /></Center> : <PacientTable patients={pacc} />}
+      </Container>
+      <Spacer />
+      <Footer />
+
+    </Box>
+
   )
 }
