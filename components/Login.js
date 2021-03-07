@@ -37,7 +37,7 @@ const Login = (loading) => {
                     onClick={(e) => {
                         e.preventDefault()
                         loading = true
-                        signIn('google', { callbackUrl: '/' })
+                        signIn('google')
                     }}
                     p={4}
                     color="white"
