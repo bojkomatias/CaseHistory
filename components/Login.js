@@ -37,7 +37,7 @@ const Login = (loading) => {
                     onClick={(e) => {
                         e.preventDefault()
                         loading = true
-                        signIn('google')
+                        signIn('google', { callbackUrl: 'https://case-history-git-develop-bojkomatias.vercel.app' })
                     }}
                     p={4}
                     color="white"
