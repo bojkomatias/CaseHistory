@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import cookie from 'js-cookie'
 import { ChevronDownIcon, ChevronUpIcon, LockIcon, SettingsIcon } from "@chakra-ui/icons";
-import { useSession, signOut } from "next-auth/client";
+import { useSession, signOut, signout } from "next-auth/client";
 import { useRouter } from "next/router";
 
 const MenuItems = ({ children }) => (
@@ -52,7 +52,10 @@ const SingedIn = () => {
           <MenuList>
             <MenuItem onClick={() => router.push('/profile')} > <SettingsIcon mr='4' /> Settings </MenuItem>
             <MenuDivider />
-            <MenuItem onClick={signOut}
+            <MenuItem onClick={(e) => {
+              e.preventDefault()
+              signOut({ callbackUrl: 'http://localhost:3000/login' })
+            }}
             ><LockIcon mr='4' /> LogOut</MenuItem>
           </MenuList>
         </Stack>

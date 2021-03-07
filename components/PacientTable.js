@@ -37,30 +37,29 @@ import { useRouter } from 'next/router'
 // Capaz usar un Store, storeando los pacientes de una!
 
 
-const PacientTable = () => {
+const PacientTable = ({ patients }) => {
     const [session, loading] = useSession()
 
     const router = useRouter()
 
-    const [patients, setPatients] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetch(`/api/pacients`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ idMedico: session.user._id })
-            })
-                .then(res => res.json())
-                .then(data => setPatients(data.pacients))
-        }
-        fetchData()
-    }, [patients]);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         await fetch(`/api/pacients`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({ idMedico: session.user._id })
+    //         })
+    //             .then(res => res.json())
+    //             .then(data => setPatients(data.pacients))
+    //     }
+    //     fetchData()
+    // }, [patients]);
 
     const [searchTerm, setSearchTerm] = React.useState("");
-    const [searchResults, setSearchResults] = React.useState(patients);
+    const [searchResults, setSearchResults] = React.useState([]);
     const handleChange = event => {
         setSearchTerm(event.target.value);
     };
@@ -71,7 +70,7 @@ const PacientTable = () => {
             );
             setSearchResults(results);
         }
-    }, [searchTerm, patients]);
+    }, [searchTerm]);
 
     return (
         <Flex as='main' direction='column' align='center'>
@@ -85,7 +84,7 @@ const PacientTable = () => {
                         />
                         <Input placeholder="Buscar pacientes..." value={searchTerm} onChange={handleChange} />
                     </InputGroup>
-                    <NewPacient setPatients={() => setPatients()} patients={patients} />
+                    <NewPacient />
                 </Stack>
 
                 <Table>
@@ -121,7 +120,7 @@ const PacientTable = () => {
                                         icon={<CopyIcon />}
                                         onClick={(e) => {
                                             e.preventDefault()
-                                            router.push(`history/${p._id}`)
+                                            router.push(`../history/${p._id}`)
                                         }}
                                     />
                                 </Td>

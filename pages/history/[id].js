@@ -4,6 +4,10 @@ import { Container, Input, Button, Flex, Popover, Box, PopoverTrigger, Portal, P
 import { motion } from "framer-motion"
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
+import { connectToDatabase } from '../../database'
+import { ObjectId } from 'mongodb'
+
+
 
 
 const variants = {
@@ -11,46 +15,45 @@ const variants = {
   closed: { opacity: 0, x: "-100%" }
 }
 
-const Post = () => {
+const History = ({ patient, history }) => {
   const router = useRouter()
   const { id } = router.query
 
   const [isOpen, setIsOpen] = useState(false)
   const toast = useToast()
-  const [patient, setPatient] = useState({})
+  // const [patient, setPatient] = useState({})
 
   const [newEntry, setNewEntry] = useState({})
-  const [history, setHistory] = useState([])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetch(`/api/pacients/${id}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-      })
-        .then(res => res.json())
-        .then(data => setPatient(data.patient))
-    }
-    fetchData()
-  }, [id]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await fetch(`/api/pacients/${id}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Accept': 'application/json',
+  //       },
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => setPatient(data.patient))
+  //   }
+  //   fetchData()
+  // }, [id]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetch(`/api/entries/get`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify(patient)
-      })
-        .then(res => res.json())
-        .then(data => setHistory(data.entries))
-    }
-    fetchData()
-  }, [history])
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await fetch(`/api/entries/get`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Accept': 'application/json',
+  //       },
+  //       body: JSON.stringify(patient)
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => setHistory(data.entries))
+  //   }
+  //   fetchData()
+  // }, [history])
 
   async function createEntry() {
 
@@ -119,6 +122,7 @@ const Post = () => {
     </Box >
   )
 }
+
 function DatosPaciente({ patient }) {
   return (
     <Popover closeOnBlur={false} placement="right" >
@@ -154,4 +158,36 @@ function DatosPaciente({ patient }) {
   )
 }
 
-export default Post
+export default History;
+
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  const db = await connectToDatabase();
+  const res = await db.collection("patients").find({}).toArray();
+  const patients = await JSON.parse(JSON.stringify(res))
+
+  // Get the paths we want to pre-render based on posts
+  const paths = patients.map((patient) => ({
+    params: { id: patient._id },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: true }
+}
+
+export async function getStaticProps({ params }) {
+  const db = await connectToDatabase();
+
+  const res = await db.collection("patients").findOne({ _id: ObjectId(params.id) });
+  const patient = JSON.parse(JSON.stringify(res))
+
+
+  const resEntries = await db.collection("entries").find({ patientId: ObjectId(params.id) }).toArray();
+  const entries = JSON.parse(JSON.stringify(resEntries))
+
+  return {
+    props: { patient: patient, history: entries },
+    revalidate: 10,
+  }
+}

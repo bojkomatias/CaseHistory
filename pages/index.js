@@ -5,18 +5,24 @@ import Footer from "../components/Footer"
 import { Box, Center, useColorModeValue, Flex, Spacer, Spinner, Container, cookieStorageManager } from "@chakra-ui/react"
 import { getSession, signIn, signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { addLocale } from 'next/dist/next-server/lib/router/router'
+import { JsonWebTokenError } from 'jsonwebtoken'
 
 
 
-export default function Home({ pacc }) {
+
+
+export default function Home() {
   const router = useRouter()
   const [session, loading] = useSession()
 
   useEffect(() => {
-    if (!(session || loading)) {
+    if (!(session || loading) || session === undefined || session === null) {
       router.push('/login')
+    }
+    else {
+      router.push(`/home/${session.user._id}`)
     }
   }, [session, loading])
   return (
@@ -29,7 +35,7 @@ export default function Home({ pacc }) {
       </Head>
       <Header />
       <Container h='85vh' minW="100%" overflow='auto'>
-        {!session || loading ? <Center><Spinner mt='36' size="xl" /></Center> : <PacientTable patients={pacc} />}
+        <Center><Spinner mt='36' size="xl" /></Center>
       </Container>
       <Spacer />
       <Footer />
@@ -38,3 +44,4 @@ export default function Home({ pacc }) {
 
   )
 }
+

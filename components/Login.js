@@ -8,7 +8,7 @@ const Login = (loading) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    return ( 
+    return (
         <Container pt='20' >
             <Center pb='12'><Image boxSize={[75]} src="/CaseHistory-Logo.png" />
                 <Heading as="h1" size="lg" letterSpacing={"-.1rem"} bgGradient="linear(to-r,blue.400, teal.500)" bgClip="text" p={2} >
@@ -37,7 +37,7 @@ const Login = (loading) => {
                     onClick={(e) => {
                         e.preventDefault()
                         loading = true
-                        signIn('google')
+                        signIn('google', { callbackUrl: 'http://localhost:3000' })
                     }}
                     p={4}
                     color="white"
