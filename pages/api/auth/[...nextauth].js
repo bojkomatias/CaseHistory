@@ -27,7 +27,7 @@ const options = {
         return { ...session }
       }
       else {
-        cookie.remove('next-auth.csrf-token')
+        // cookie.remove('next-auth.csrf-token')
         return null
       }
     },
