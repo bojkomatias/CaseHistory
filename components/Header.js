@@ -55,7 +55,7 @@ const SingedIn = () => {
             <MenuDivider />
             <MenuItem onClick={(e) => {
               e.preventDefault()
-              signOut({ callbackUrl: 'http://localhost:3000/login' })
+              signOut({ callbackUrl: '/login' })
             }}
             ><LockIcon mr='4' /> LogOut</MenuItem>
           </MenuList>
