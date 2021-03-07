@@ -9,12 +9,6 @@ import { ObjectId } from 'mongodb'
 
 
 
-
-const variants = {
-  open: { opacity: 1, x: 0 },
-  closed: { opacity: 0, x: "-100%" }
-}
-
 const History = ({ patient, history }) => {
   const router = useRouter()
   const { id } = router.query
@@ -138,7 +132,7 @@ function DatosPaciente({ patient }) {
               <PopoverBody>
                 <Table>
                   <Tbody>
-                    {Object.entries(patient).map(p => {
+                    {/* {Object.entries(patient).map(p => {
                       if (!p[0].includes('idM') && !p[0].includes('_id') && !p[0].includes('At') && !p[0].includes('__v')) {
                         return (
                           <div key={p._id}>
@@ -149,7 +143,7 @@ function DatosPaciente({ patient }) {
                           </div>
                         )
                       }
-                    })}
+                    })} */}
                   </Tbody>
                 </Table>
               </PopoverBody>

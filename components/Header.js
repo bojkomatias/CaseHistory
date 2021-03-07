@@ -50,7 +50,8 @@ const SingedIn = () => {
             {session.user.name} {isOpen ? <ChevronDownIcon boxSize={5} /> : <ChevronUpIcon boxSize={5} />}
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={() => router.push('/profile')} > <SettingsIcon mr='4' /> Settings </MenuItem>
+            <MenuItem > <SettingsIcon mr='4' /> Settings </MenuItem>
+            {/* onClick={() => router.push('/profile')}  */}
             <MenuDivider />
             <MenuItem onClick={(e) => {
               e.preventDefault()
