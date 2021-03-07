@@ -13,12 +13,12 @@ const Profile = () => {
             <Header />
 
             <Container p='36' minW='80%'>
-                {Object.entries(session.user).map(k => (
+                {/* {Object.entries(session.user).map(k => (
                     <Stack direction='row'>
                         <Text fontSize='xl'> {k[0]}: {k[1]}</Text>
                     </Stack>
                 )
-                )}
+                )} */}
 
                 <Heading pt='36'> Esta página esta en construccion por el momento...</Heading>
                 <Heading py='8'>... pero hay mucho potencial, si tenes alguna idea, mencionamela personalmente.</Heading>
