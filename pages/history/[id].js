@@ -94,7 +94,8 @@ const History = ({ patient, history }) => {
       <Header />
 
       <Flex h='100vh' width='100%' overflowY='auto' >
-        <DatosPaciente patient={patient} />
+        {patient === undefined ? <></> :
+          <DatosPaciente patient={patient} />}
         <Container boxShadow="dark-lg" p="6" >
 
           <Heading as="h1" size="xl" p='8' >
@@ -140,10 +141,12 @@ function DatosPaciente({ patient }) {
                     {Object.entries(patient).map(p => {
                       if (!p[0].includes('idM') && !p[0].includes('_id') && !p[0].includes('At') && !p[0].includes('__v')) {
                         return (
-                          <Tr key={p._id}>
-                            <Td textTransform='capitalize'>{p[0].replace('_', ' ')}</Td>
-                            <Td>{p[1]}</Td>
-                          </Tr>
+                          <div key={p._id}>
+                            <Tr>
+                              <Td textTransform='capitalize'>{p[0].replace('_', ' ')}</Td>
+                              <Td>{p[1]}</Td>
+                            </Tr>
+                          </div>
                         )
                       }
                     })}
@@ -170,6 +173,8 @@ export async function getStaticPaths() {
   const paths = patients.map((patient) => ({
     params: { id: patient._id },
   }))
+
+  console.log(paths)
 
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
