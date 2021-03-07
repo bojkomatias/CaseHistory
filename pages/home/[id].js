@@ -41,7 +41,7 @@ export async function getStaticPaths() {
   // Call an external API endpoint to get posts
   const db = await connectToDatabase();
   const res = await db.collection("users").find({}).toArray();
-  const users = await JSON.parse(JSON.stringify(res))
+  const users = JSON.parse(JSON.stringify(res))
 
   // Get the paths we want to pre-render based on posts
   const paths = users.map((user) => ({

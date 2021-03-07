@@ -19,36 +19,6 @@ const History = ({ patient, history }) => {
 
   const [newEntry, setNewEntry] = useState({})
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await fetch(`/api/pacients/${id}`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Accept': 'application/json',
-  //       },
-  //     })
-  //       .then(res => res.json())
-  //       .then(data => setPatient(data.patient))
-  //   }
-  //   fetchData()
-  // }, [id]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await fetch(`/api/entries/get`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Accept': 'application/json',
-  //       },
-  //       body: JSON.stringify(patient)
-  //     })
-  //       .then(res => res.json())
-  //       .then(data => setHistory(data.entries))
-  //   }
-  //   fetchData()
-  // }, [history])
-
   async function createEntry() {
 
     await fetch(`/api/entries/add`, {
@@ -108,7 +78,7 @@ const History = ({ patient, history }) => {
 
           <Heading> Aca te mostraria las viejas entradas</Heading>
 
-          {history.map(h => <p key={h._id}>{h.general}</p>)}
+          {/* {history.map(h => <p key={h._id}>{h.general}</p>)} */}
 
 
         </Container>
@@ -162,7 +132,7 @@ export async function getStaticPaths() {
   // Call an external API endpoint to get posts
   const db = await connectToDatabase();
   const res = await db.collection("patients").find({}).toArray();
-  const patients = await JSON.parse(JSON.stringify(res))
+  const patients = JSON.parse(JSON.stringify(res))
 
   // Get the paths we want to pre-render based on posts
   const paths = patients.map((patient) => ({
