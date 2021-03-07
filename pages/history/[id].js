@@ -132,10 +132,11 @@ function DatosPaciente({ patient }) {
               <PopoverBody>
                 <Table>
                   <Tbody>
-                    {/* {Object.entries(patient).map(p => {
+                    {Object.entries(patient).map(p => {
                       if (!p[0].includes('idM') && !p[0].includes('_id') && !p[0].includes('At') && !p[0].includes('__v')) {
                         return (
-                          <div key={p._id}>
+                          <div key={p[0]}>
+
                             <Tr>
                               <Td textTransform='capitalize'>{p[0].replace('_', ' ')}</Td>
                               <Td>{p[1]}</Td>
@@ -143,7 +144,7 @@ function DatosPaciente({ patient }) {
                           </div>
                         )
                       }
-                    })} */}
+                    })}
                   </Tbody>
                 </Table>
               </PopoverBody>
