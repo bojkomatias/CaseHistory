@@ -53,10 +53,13 @@ const History = ({ patient, history }) => {
 
   return (
     <Box h='100vh'>
+      <Head>
+        <title>Case History</title>
+        <link rel="icon" href="/CaseHistory-Logo.png" />
+      </Head>
       <Header />
 
       <Flex h='100vh' width='100%' >
-
         <Box p='6' width='full'>
           <Center>
             <Stack direction='row' mt={10} alignItems='center'>
@@ -165,6 +168,6 @@ export async function getStaticProps({ params }) {
 
   return {
     props: { patient: patient, history: entries },
-    revalidate: 10,
+    revalidate: 1,
   }
 }

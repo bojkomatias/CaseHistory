@@ -10,6 +10,10 @@ const Profile = () => {
 
     return (
         <Box h='100vh'>
+            <Head>
+                <title>Case History</title>
+                <link rel="icon" href="/CaseHistory-Logo.png" />
+            </Head>
             <Header />
 
             <Container p='36' minW='80%'>
