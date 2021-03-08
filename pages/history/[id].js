@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { IconButton, Input, Button, Flex, Popover, Box, PopoverTrigger, Portal, PopoverBody, PopoverContent, PopoverFooter, PopoverCloseButton, PopoverHeader, Heading, Text, Table, Tr, Td, useToast, Code, FormControl, FormLabel, Tbody, Divider, Textarea, Stack, Center } from "@chakra-ui/react";
 import { SearchIcon, AddIcon, EditIcon, CopyIcon } from "@chakra-ui/icons";
