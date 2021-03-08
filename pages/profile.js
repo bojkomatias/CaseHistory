@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Head from 'next/head'
 import { Button, Text, Container, Input, Stack, Heading, Box } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from 'next-auth/client'
 import Header from '../components/Header'
