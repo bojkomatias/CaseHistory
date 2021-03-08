@@ -60,11 +60,12 @@ const History = ({ patient, history }) => {
         <Box p='6' width='full'>
           <Center>
             <Stack direction='row' mt={10} alignItems='center'>
-              <Heading as="h1" size="lg" >
-                Historia Clínica de {`${patient.apellido}, ${patient.nombre}`}
-              </Heading>
-              {patient === undefined ? <></> :
-                <DatosPaciente patient={patient} />}
+              {patient === undefined ? <></> : <>
+                <Heading as="h1" size="lg" >
+                  Historia Clínica de {`${patient.apellido}, ${patient.nombre}`}
+                </Heading>
+
+                <DatosPaciente patient={patient} /> </>}
             </Stack>
           </Center>
           <form onSubmit={e => {
