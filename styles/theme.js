@@ -9,24 +9,17 @@ const theme = extendTheme({
     useSystemColorMode: false,
   },
   styles: {
+    global: {
+      "html, body": {
+        fontSize: ["sm", "md", "base", "lg"],
+      },
+    },
   },
-  // components: {
-  //   Button: {
-  //     sizes: {
-  //       lg: {
-  //         fontSize: "32px",
-  //         padding: "16px",
-  //       },
-  //       md: {
-  //         fontSize: "8px",
-  //         padding: "24px",
-  //       },
-  //     },
-  //     defaultProps: {
-  //       size: "md"
-  //     }
-  //   },
-  // },
+  components: {
+    Button: {
+      fontSize: ["sm", "md", "base", "lg"],
+    },
+  },
 
 })
 

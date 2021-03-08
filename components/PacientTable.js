@@ -39,30 +39,13 @@ import { useRouter } from 'next/router'
 
 const PacientTable = ({ patients }) => {
     const [session, loading] = useSession()
-
     const router = useRouter()
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         await fetch(`/api/pacients`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({ idMedico: session.user._id })
-    //         })
-    //             .then(res => res.json())
-    //             .then(data => setPatients(data.pacients))
-    //     }
-    //     fetchData()
-    // }, [patients]);
-
     const [searchTerm, setSearchTerm] = React.useState("");
     const [searchResults, setSearchResults] = React.useState([]);
     const handleChange = event => {
         setSearchTerm(event.target.value);
     };
+
     useEffect(() => {
         if (patients !== undefined) {
             const results = patients.filter(person =>
@@ -73,20 +56,18 @@ const PacientTable = ({ patients }) => {
     }, [searchTerm]);
 
     return (
-        <Flex as='main' direction='column' align='center'>
-            <Stack pt="20" pb="8" spacing={8} width='70%'>
-
-                <Stack direction="row">
+        <Flex h='100vh' width='100%'>
+            <Stack width='full' mt={20} >
+                <Stack direction='row' alignItems='baseline'>
                     <InputGroup>
                         <InputLeftElement
                             pointerEvents="none"
-                            children={<SearchIcon color="gray.300" />}
+                            children={<SearchIcon color="gray.600" />}
                         />
                         <Input placeholder="Buscar pacientes..." value={searchTerm} onChange={handleChange} />
                     </InputGroup>
                     <NewPacient />
                 </Stack>
-
                 <Table>
                     <Thead>
                         <Tr>
@@ -99,16 +80,18 @@ const PacientTable = ({ patients }) => {
                     <Tbody>
                         {searchResults.map(p =>
                             <Tr key={p._id}>
-                                <Td><Text fontWeight='bold' fontSize='lg'>{p.nombre} {p.apellido}</Text></Td>
-                                <Td><Text fontWeight='bold' fontSize='lg'>{p.dni}</Text></Td>
+                                <Td>{p.nombre} {p.apellido}</Td>
+                                <Td>{p.dni}</Td>
                                 <Td isNumeric>
                                     <IconButton
                                         mx={1}
                                         variant="outline"
                                         colorScheme="teal"
                                         title='Editar Datos'
-                                        size="lg"
-                                        icon={<EditIcon />}
+                                        w={[6, 8, 12]}
+                                        h={[6, 8, 12]}
+                                        icon={<EditIcon w={[4, 6]}
+                                            h={[4, 6]} />}
                                     />
 
                                     <IconButton
@@ -116,8 +99,10 @@ const PacientTable = ({ patients }) => {
                                         variant="outline"
                                         colorScheme="teal"
                                         title='Ver Historia Clinica'
-                                        size="lg"
-                                        icon={<CopyIcon />}
+                                        w={[6, 8, 12]}
+                                        h={[6, 8, 12]}
+                                        icon={<CopyIcon w={[4, 6]}
+                                            h={[4, 6]} />}
                                         onClick={(e) => {
                                             e.preventDefault()
                                             router.push(`../history/${p._id}`)

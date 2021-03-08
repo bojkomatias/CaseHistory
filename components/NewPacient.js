@@ -67,21 +67,18 @@ const NewPacient = () => {
 
     return (
         <>
-            <Button
-
-                p='2'
+            <IconButton
                 onClick={onOpen}
-                color="white"
-                fontWeight="bold"
-                borderRadius="md"
-                bgGradient="linear(to-l, teal.500, teal.700)"
-                _hover={{
-                    bgGradient: "linear(to-r, red.500, yellow.500)",
-                }}
-            >
-                <AddIcon ml="4" />
-                <Text m='2' fontSize='md'>NuevoPaciente</Text>
-            </Button>
+                justifySelf='end'
+                m={4}
+                variant="ghost"
+                colorScheme="teal"
+                title='Crear Nuevo Paciente'
+                w={[8]}
+                h={[8]}
+                icon={<AddIcon w={[5]}
+                    h={[5]} />}
+            />
             <Drawer
                 isOpen={isOpen}
                 placement="right"

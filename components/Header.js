@@ -37,12 +37,8 @@ const SingedIn = () => {
     <Menu>
       {({ isOpen }) => (
         <Stack direction='row'>
-          <Wrap>
-            <WrapItem>
-              <Avatar size='md' src={session.user.image} />
-            </WrapItem>
-          </Wrap>
-          <MenuButton p='6' as={Button} color='white' bgGradient='linear(to-l, teal.700, teal.600)' _hover={{
+          <Avatar size='sm' alignSelf='center' src={session.user.image} />
+          <MenuButton alignSelf='center' p={[2, 4, 6]} as={Button} color='white' bgGradient='linear(to-l, teal.700, teal.600)' _hover={{
             bgGradient: "linear(to-r, yellow.500, orange.400)",
           }} _expanded={{
             bgGradient: "linear(to-r, yellow.400, orange.500)",
@@ -50,14 +46,14 @@ const SingedIn = () => {
             {session.user.name} {isOpen ? <ChevronDownIcon boxSize={5} /> : <ChevronUpIcon boxSize={5} />}
           </MenuButton>
           <MenuList>
-            <MenuItem > <SettingsIcon mr='4' /> Settings </MenuItem>
+            <MenuItem > <SettingsIcon mx='4' /> Settings </MenuItem>
             {/* onClick={() => router.push('/profile')}  */}
             <MenuDivider />
             <MenuItem onClick={(e) => {
               e.preventDefault()
               signOut({ callbackUrl: '/login' })
             }}
-            ><LockIcon mr='4' /> LogOut</MenuItem>
+            ><LockIcon mx='4' /> LogOut</MenuItem>
           </MenuList>
         </Stack>
       )}
@@ -86,8 +82,8 @@ const Header = props => {
       {...props}
     >
       <Flex align="center" ml={[2, 4, 8]} cursor='pointer' onClick={() => router.push('/')}>
-        <Image boxSize={[50]} src="/CaseHistory-Logo.png" />
-        <Heading as="h1" letterSpacing={"-.1rem"} bgGradient="linear(to-r,blue.700, teal.700)" bgClip="text" p={2} >
+        <Image boxSize={[0, 50]} src="/CaseHistory-Logo.png" />
+        <Heading as="h1" fontSize={{ lg: '2xl', base: 'xl', md: 'lg', sm: 'md' }} letterSpacing={"-.1rem"} bgGradient="linear(to-r,blue.700, teal.700)" bgClip="text" p={2} >
           Case History
         </Heading>
       </Flex>

@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
-import { Container, Input, Button, Flex, Popover, Box, PopoverTrigger, Portal, PopoverBody, PopoverContent, PopoverFooter, PopoverCloseButton, PopoverHeader, Heading, Text, Table, Tr, Td, useToast, Code, FormControl, FormLabel, Tbody } from "@chakra-ui/react";
-import { motion } from "framer-motion"
+import { IconButton, Input, Button, Flex, Popover, Box, PopoverTrigger, Portal, PopoverBody, PopoverContent, PopoverFooter, PopoverCloseButton, PopoverHeader, Heading, Text, Table, Tr, Td, useToast, Code, FormControl, FormLabel, Tbody, Divider, Textarea, Stack, Center } from "@chakra-ui/react";
+import { SearchIcon, AddIcon, EditIcon, CopyIcon } from "@chakra-ui/icons";
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { connectToDatabase } from '../../database'
 import { ObjectId } from 'mongodb'
 
 
-
 const History = ({ patient, history }) => {
   const router = useRouter()
   const { id } = router.query
-
   const [isOpen, setIsOpen] = useState(false)
   const toast = useToast()
   // const [patient, setPatient] = useState({})
@@ -57,31 +55,35 @@ const History = ({ patient, history }) => {
     <Box h='100vh'>
       <Header />
 
-      <Flex h='100vh' width='100%' overflowY='auto' >
-        {patient === undefined ? <></> :
-          <DatosPaciente patient={patient} />}
-        <Container boxShadow="dark-lg" p="6" >
+      <Flex h='100vh' width='100%' >
 
-          <Heading as="h1" size="xl" p='8' >
-            Historia Clínica
-          </Heading>
+        <Box p='6' width='full'>
+          <Center>
+            <Stack direction='row' mt={10} alignItems='center'>
+              <Heading as="h1" size="lg" >
+                Historia Clínica de {`${patient.apellido}, ${patient.nombre}`}
+              </Heading>
+              {patient === undefined ? <></> :
+                <DatosPaciente patient={patient} />}
+            </Stack>
+          </Center>
           <form onSubmit={e => {
             e.preventDefault()
             createEntry()
           }}>
             <FormControl isRequired>
               <FormLabel>General</FormLabel>
-              <Input onChange={e => setNewEntry({ ...newEntry, ...{ general: `${e.target.value}` } })} />
+              <Textarea onChange={e => setNewEntry({ ...newEntry, ...{ general: `${e.target.value}` } })} />
             </FormControl>
             <Button type='submit'>Crear</Button>
           </form>
+          <Divider py='2' />
+          <Heading size='md' > Aca te mostraria las viejas entradas</Heading>
 
-          <Heading> Aca te mostraria las viejas entradas</Heading>
-
-          {/* {history.map(h => <p key={h._id}>{h.general}</p>)} */}
+          {history === null || undefined ? <Text>Este paciente no tiene Entradas </Text> : history.map(h => <p key={h._id}>{h.general}</p>)}
 
 
-        </Container>
+        </Box>
       </Flex>
       <Footer />
     </Box >
@@ -90,28 +92,32 @@ const History = ({ patient, history }) => {
 
 function DatosPaciente({ patient }) {
   return (
-    <Popover closeOnBlur={false} placement="right" >
+    <Popover closeOnBlur={false} placement="left-start" >
       {({ isOpen, onClose }) => (
         <>
           <PopoverTrigger>
-            <Button alignSelf='center' justifySelf='right' fontWeight='bold' fontSize='2xl'>{patient.apellido}, {patient.nombre}</Button>
+            <IconButton
+              variant="ghost"
+              colorScheme="teal"
+              title='Ver Datos'
+              w={[8]}
+              h={[8]}
+              icon={<SearchIcon w={[5]}
+                h={[5]} />}
+            />
           </PopoverTrigger>
           <Portal>
-            <PopoverContent>
-              <PopoverHeader><Text fontSize='lg' fontWeight='semibold' ml='12'>{`${patient.apellido}, ${patient.nombre}`}</Text></PopoverHeader>
+            <PopoverContent overflowY='auto'>
               <PopoverBody>
-                <Table>
+                <Table fontSize='sm' >
                   <Tbody>
                     {Object.entries(patient).map(p => {
                       if (!p[0].includes('idM') && !p[0].includes('_id') && !p[0].includes('At') && !p[0].includes('__v')) {
                         return (
-                          <div key={p[0]}>
-
-                            <Tr>
-                              <Td textTransform='capitalize'>{p[0].replace('_', ' ')}</Td>
-                              <Td>{p[1]}</Td>
-                            </Tr>
-                          </div>
+                          <Tr key={p[0]}>
+                            <Td textTransform='capitalize'>{p[0].replace('_', ' ')}</Td>
+                            <Td>{p[1]}</Td>
+                          </Tr>
                         )
                       }
                     })}
