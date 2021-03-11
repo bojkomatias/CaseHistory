@@ -11,7 +11,6 @@ import { ObjectId } from 'mongodb'
 
 const History = ({ patient, history }) => {
   const router = useRouter()
-  const { id } = router.query
   const [isOpen, setIsOpen] = useState(false)
   const toast = useToast()
   // const [patient, setPatient] = useState({})
@@ -26,7 +25,7 @@ const History = ({ patient, history }) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ ...newEntry, patientId: patient._id, createdAt: Date.UTC() })
+      body: JSON.stringify({ ...newEntry, patientId: patient._id })
     })
       .then(res => {
         setNewEntry({})
@@ -75,6 +74,7 @@ const History = ({ patient, history }) => {
           <form onSubmit={e => {
             e.preventDefault()
             createEntry()
+            setNewEntry({})
           }}>
             <FormControl isRequired>
               <FormLabel>General</FormLabel>
@@ -84,10 +84,12 @@ const History = ({ patient, history }) => {
           </form>
           <Divider py='2' />
           <Heading size='md' > Aca te mostraria las viejas entradas</Heading>
-
-          {history == undefined ? <Text>Este paciente no tiene Entradas </Text> : history.map(h => <p key={h._id}>{h.general}</p>)}
-
-
+          <Text >
+            {history.map(h =>
+              <> {h.general}  <br /><br /></>
+            )}
+          </Text>
+          {/* {history == undefined ? <Text>Este paciente no tiene Entradas </Text> : history.map(h => <p key={h._id}>{h.general}</p>)} */}
         </Box>
       </Flex>
       <Footer />

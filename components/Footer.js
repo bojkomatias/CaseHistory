@@ -28,7 +28,7 @@ const Footer = props => {
       flexGrow={1}
       position='fixed'
       bottom='0'
-      minH="16px"
+      minH="12px"
       align="center"
       justify="space-between"
       wrap="wrap"
@@ -38,9 +38,6 @@ const Footer = props => {
       {...props}
     >
       <Flex align="bottom" mr={10}>
-        <Heading as="h1" size="lg" letterSpacing={"-.1rem"} bg="transparent" bgClip="text" p={2} >
-          Case History
-        </Heading>
       </Flex>
       <Spacer />
       <Box

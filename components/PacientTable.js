@@ -28,7 +28,7 @@ import {
     useDisclosure,
     Box
 } from "@chakra-ui/react";
-import { SearchIcon, AddIcon, EditIcon, CopyIcon } from "@chakra-ui/icons";
+import { SearchIcon, AddIcon, EditIcon, CopyIcon, TriangleDownIcon, TriangleUpIcon, ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { useSession } from 'next-auth/client'
 import NewPacient from './NewPacient'
 import { useRouter } from 'next/router'
@@ -40,39 +40,61 @@ import { useRouter } from 'next/router'
 const PacientTable = ({ patients }) => {
     const [session, loading] = useSession()
     const router = useRouter()
+    const [localPatients, setLocalPatients] = useState(patients)
     const [searchTerm, setSearchTerm] = React.useState("");
     const [searchResults, setSearchResults] = React.useState([]);
     const handleChange = event => {
         setSearchTerm(event.target.value);
     };
+    const [sortedField, setSortedField] = useState('createdAt');
+    const [sortDirection, setSortDirection] = useState(true);
 
     useEffect(() => {
-        if (patients !== undefined) {
-            const results = patients.filter(person =>
-                person.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        if (localPatients !== undefined) {
+            const results = localPatients.filter(person =>
+                person.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                person.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                String(person.dni).toLowerCase().includes(searchTerm.toLowerCase())
             );
-            setSearchResults(results);
+            const resultsSort = [...results]
+            resultsSort.sort((a, b) => {
+                if (a[sortedField] < b[sortedField]) {
+                    return sortDirection ? -1 : 1;
+                }
+                return 0;
+            })
+            setSearchResults(resultsSort);
         }
-    }, [searchTerm]);
+    }, [searchTerm, localPatients, sortedField, sortDirection]);
 
     return (
-        <Flex h='100vh' width='100%'>
-            <Stack width='full' mt={20} >
-                <Stack direction='row' alignItems='baseline'>
+        <Flex h='100vh' width='100%' justifyContent='center'>
+            <Stack width={{ xl: '80%', lg: 'full' }} mt={20} >
+                <Stack direction='row' alignItems='center'>
                     <InputGroup>
-                        <InputLeftElement
+                        <InputLeftElement mx={1} h={[6, 8, 12]}
                             pointerEvents="none"
-                            children={<SearchIcon color="gray.600" />}
+                            children={<SearchIcon h={[3, 4, 4, 6]} w={[3, 4, 4, 6]} color="gray.600" />}
                         />
-                        <Input placeholder="Buscar pacientes..." value={searchTerm} onChange={handleChange} />
+                        <Input textAlign='center' h={[6, 8, 12]} fontSize={{ xl: 'xl', lg: 'lg', md: 'sm' }} placeholder="Apellido, Nombre, DNI, ..." value={searchTerm} onChange={handleChange} />
                     </InputGroup>
-                    <NewPacient />
+                    <NewPacient setLocalPatients={setLocalPatients} />
                 </Stack>
                 <Table>
                     <Thead>
                         <Tr>
-                            <Th><Text fontStyle='italic' fontSize='sm'>Paciente</Text></Th>
-                            <Th><Text fontStyle='italic' fontSize='sm'>DNI</Text></Th>
+                            <Th cursor='pointer' onClick={() => {
+                                setSortedField('apellido')
+                                setSortDirection(prev => !prev)
+                            }}> <Text fontStyle='italic' fontSize={{ base: 'md', md: 'sm', sm: 'xs' }}>Paciente {sortedField === 'apellido' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
+                            <Th cursor='pointer' onClick={() => {
+                                setSortedField('dni')
+                                setSortDirection(prev => !prev)
+                            }}><Text fontStyle='italic' fontSize='sm'>DNI {sortedField === 'dni' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
+                            <Th cursor='pointer' onClick={() => {
+                                setSortedField('createdAt')
+                                setSortDirection(prev => !prev)
+                            }}><Text fontStyle='italic' fontSize='sm'>Creado {sortedField === 'createdAt' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
                             <Th isNumeric><Text fontStyle='italic' fontSize='sm'>Opciones</Text></Th>
 
                         </Tr>
@@ -80,20 +102,11 @@ const PacientTable = ({ patients }) => {
                     <Tbody>
                         {searchResults.map(p =>
                             <Tr key={p._id}>
-                                <Td>{p.nombre} {p.apellido}</Td>
+                                <Td >{p.apellido}, {p.nombre}</Td>
                                 <Td>{p.dni}</Td>
+                                <Td>{p.createdAt}</Td>
                                 <Td isNumeric>
-                                    <IconButton
-                                        mx={1}
-                                        variant="outline"
-                                        colorScheme="teal"
-                                        title='Editar Datos'
-                                        w={[6, 8, 12]}
-                                        h={[6, 8, 12]}
-                                        icon={<EditIcon w={[4, 6]}
-                                            h={[4, 6]} />}
-                                    />
-
+                                    <NewPacient setLocalPatients={setLocalPatients} existingPatient={p} />
                                     <IconButton
                                         mx={1}
                                         variant="outline"

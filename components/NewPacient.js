@@ -19,18 +19,18 @@ import {
     useDisclosure,
     Box, Text, Stack, FormHelperText, useToast, Form
 } from "@chakra-ui/react";
-import { AddIcon, CloseIcon, CheckIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon, CheckIcon, EditIcon } from "@chakra-ui/icons";
 
 
 // Capaz usar un Store, storeando los patientes de una!
 
-const NewPacient = () => {
+const NewPacient = ({ setLocalPatients, existingPatient }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef()
 
     const toast = useToast()
 
-    const [patient, setPatient] = useState({})
+    const [patient, setPatient] = useState(existingPatient || {})
 
     async function createPatient() {
         onClose()
@@ -40,45 +40,60 @@ const NewPacient = () => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(patient)
+            body: JSON.stringify({ ...patient })
         })
             .then(res => {
+                res.json().then(d => console.log(d))
                 if (res.status == 200) {
+                    // Actualizar solo el paciente cambiado! >D
+                    if (existingPatient == undefined) {
+                        setLocalPatients(prevS => [...prevS, patient])
+                    } else {
+                        setLocalPatients(prevS => [...prevS.filter(p => p._id !== patient._id), patient])
+                    }
                     toast({
                         title: "Paciente Guardado.",
-                        description: "Se cargo correctamente un nuevo paciente.",
+                        description: "Se guardo correctamente el paciente.",
                         status: "success",
                         duration: 6000,
                         isClosable: true,
                     })
-
                 } else {
                     toast({
                         title: "Error.",
-                        description: "Ha habido un error al crear un nuevo paciente.",
+                        description: "Ha habido un error al guardar el paciente.",
                         status: "error",
                         duration: 6000,
                         isClosable: true,
                     })
                 }
             })
-
     }
 
     return (
         <>
-            <IconButton
+            {existingPatient == undefined ? <IconButton
                 onClick={onOpen}
                 justifySelf='end'
-                m={4}
-                variant="ghost"
+                mx={[1]}
+                variant="outline"
                 colorScheme="teal"
                 title='Crear Nuevo Paciente'
-                w={[8]}
-                h={[8]}
-                icon={<AddIcon w={[5]}
-                    h={[5]} />}
-            />
+                w={[6, 8, 12]}
+                h={[6, 8, 12]}
+                icon={<AddIcon w={[4, 6]}
+                    h={[4, 6]} />}
+            /> : <IconButton
+                onClick={onOpen}
+                mx={[1]}
+                variant="outline"
+                colorScheme="teal"
+                title='Editar Datos'
+                w={[6, 8, 12]}
+                h={[6, 8, 12]}
+                icon={<EditIcon w={[4, 6]}
+                    h={[4, 6]} />}
+            />}
             <Drawer
                 isOpen={isOpen}
                 placement="right"
@@ -95,59 +110,60 @@ const NewPacient = () => {
                     <DrawerOverlay>
                         <DrawerContent>
                             <DrawerCloseButton />
-                            <DrawerHeader>Crear Nuevo Paciente</DrawerHeader>
+                            {existingPatient == undefined ? <DrawerHeader>Crear Nuevo Paciente</DrawerHeader> : <DrawerHeader>{existingPatient.nombre}</DrawerHeader>}
 
                             <DrawerBody>
-                                <Stack spacing={1}>
-
+                                <Stack spacing={1} fontSize='sm'>
                                     <FormControl isRequired>
                                         <FormLabel>Nombre</FormLabel>
-                                        <Input ref={firstField} onChange={e => setPatient({ ...patient, ...{ nombre: `${e.target.value}` } })} />
+                                        <Input value={patient.nombre} ref={firstField} onChange={e => setPatient({ ...patient, ...{ nombre: `${e.target.value}` } })} />
                                     </FormControl>
                                     <FormControl isRequired>
                                         <FormLabel>Apellido</FormLabel>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ apellido: `${e.target.value}` } })} />
+                                        <Input value={patient.apellido} onChange={e => setPatient({ ...patient, ...{ apellido: `${e.target.value}` } })} />
                                     </FormControl>
                                     <FormControl isRequired>
                                         <FormLabel>Nº Documento</FormLabel>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ dni: `${e.target.value}` } })} />
+                                        <Input value={patient.dni} onChange={e => setPatient({ ...patient, ...{ dni: Number(e.target.value) } })} />
                                     </FormControl>
                                     <FormControl isRequired>
                                         <FormLabel>Fecha de Nacimiento</FormLabel>
                                         <FormHelperText> DD/MM/AAAA</FormHelperText>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ nacimiento: `${e.target.value}` } })} />
+                                        <Input value={patient.nacimiento} onChange={e => setPatient({ ...patient, ...{ nacimiento: `${e.target.value}` } })} />
                                     </FormControl>
                                     <FormControl >
                                         <FormLabel>Sexo</FormLabel>
-                                        <RadioGroup pb={4}>
+                                        <RadioGroup pb={4} defaultValue={existingPatient == undefined ? null : existingPatient.sexo}>
                                             <Stack direction="row" justifyContent='space-around'>
                                                 <Radio value="Masculino" onChange={e => setPatient({ ...patient, ...{ sexo: `${e.target.value}` } })}>Masculino</Radio>
                                                 <Radio value="Femenino" onChange={e => setPatient({ ...patient, ...{ sexo: `${e.target.value}` } })}>Femenino</Radio>
-                                                <Radio value="Prefiero no decirlo" onChange={e => setPatient({ ...patient, ...{ sexo: `${e.target.value}` } })}>Prefiero no decirlo</Radio>
                                             </Stack>
                                         </RadioGroup>
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel> Estado Civil </FormLabel>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ estado_civil: `${e.target.value}` } })} />
+                                        <Input value={patient.estado_civil} onChange={e => setPatient({ ...patient, ...{ estado_civil: `${e.target.value}` } })} />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel> Nacionalidad </FormLabel>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ nacionalidad: `${e.target.value}` } })} />
+                                        <Input value={patient.nacionalidad} onChange={e => setPatient({ ...patient, ...{ nacionalidad: `${e.target.value}` } })} />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel> Dirección </FormLabel>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ domicilio: `${e.target.value}` } })} />
+                                        <Input value={patient.domicilio} onChange={e => setPatient({ ...patient, ...{ domicilio: `${e.target.value}` } })} />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel> Telefono </FormLabel>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ telefono: `${e.target.value}` } })} />
+                                        <Input value={patient.telefono} onChange={e => setPatient({ ...patient, ...{ telefono: `${e.target.value}` } })} />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel> Obra Social </FormLabel>
-                                        <Input onChange={e => setPatient({ ...patient, ...{ obra_social: `${e.target.value}` } })} />
+                                        <Input value={patient.obra_social} onChange={e => setPatient({ ...patient, ...{ obra_social: `${e.target.value}` } })} />
                                     </FormControl>
-
+                                    <FormControl>
+                                        <FormLabel> Numero de Afiliado </FormLabel>
+                                        <Input value={patient.afiliado} onChange={e => setPatient({ ...patient, ...{ afiliado: `${e.target.value}` } })} />
+                                    </FormControl>
                                 </Stack>
                             </DrawerBody>
 
