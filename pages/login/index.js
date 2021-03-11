@@ -23,13 +23,10 @@ export default function SignIn({ providers }) {
   return (
 
     <Box bgGradient={useColorModeValue('radial(white,gray.200)', 'radial(gray.600,gray.900)')}>
-      <Head>
-        <title>Case History</title>
-        <link rel="icon" href="/CaseHistory-Logo.png" />
-      </Head>
+
       <Header />
       <Container h='90vh' minW="100%" overflow='auto'>
-      {!loading ? <Login loading={loading} /> : <Center><Spinner mt='36' size="xl" /></Center>}
+        {!loading ? <Login loading={loading} /> : <Center><Spinner mt='36' size="xl" /></Center>}
       </Container>
       <Footer />
     </Box>

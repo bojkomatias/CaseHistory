@@ -18,10 +18,7 @@ const Homepage = ({ patients }) => {
   return (
 
     <Box h='100vh' bgGradient={useColorModeValue('radial(white,gray.100)', 'radial(gray.700,gray.800)')}>
-      <Head>
-        <title>Case History</title>
-        <link rel="icon" href="/CaseHistory-Logo.png" />
-      </Head>
+
       <Header />
       <Container h='85vh' minW="100%" overflow='auto'>
         <PacientTable patients={patients} />

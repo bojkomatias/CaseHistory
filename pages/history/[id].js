@@ -53,10 +53,7 @@ const History = ({ patient, history }) => {
 
   return (
     <Box h='100vh'>
-      <Head>
-        <title>Case History</title>
-        <link rel="icon" href="/CaseHistory-Logo.png" />
-      </Head>
+
       <Header />
 
       <Flex h='100vh' width='100%' >
@@ -86,7 +83,7 @@ const History = ({ patient, history }) => {
           <Heading size='md' > Aca te mostraria las viejas entradas</Heading>
           <Text >
             {history == undefined ? <Text>Este paciente no tiene Entradas </Text> : history.map(h =>
-              <> {h.general}  <br /><br /></>
+              <div key={h._id}> {h.general}  <br /><br /></div>
             )}
           </Text>
         </Box>

@@ -28,11 +28,7 @@ export default function Home() {
   return (
 
     <Box h='100vh' bgGradient={useColorModeValue('radial(white,gray.100)', 'radial(gray.700,gray.800)')}>
-      <Head>
-        <title>Case History</title>
-        <link rel="icon" href="/CaseHistory-Logo.png" />
-        <link rel="manifest" href="/manifest.json" />
-      </Head>
+
       <Header />
       <Container h='85vh' minW="100%" overflow='auto'>
         <Center><Spinner mt='36' size="xl" /></Center>

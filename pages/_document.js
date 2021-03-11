@@ -8,7 +8,11 @@ export default class Document extends NextDocument {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          <title>Case History</title>
+          <link rel="icon" href="/CaseHistory-Logo.png" />
+          <link rel="manifest" href="/manifest.json" />
+        </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
