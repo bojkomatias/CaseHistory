@@ -85,11 +85,10 @@ const History = ({ patient, history }) => {
           <Divider py='2' />
           <Heading size='md' > Aca te mostraria las viejas entradas</Heading>
           <Text >
-            {history.map(h =>
+            {history == undefined ? <Text>Este paciente no tiene Entradas </Text> : history.map(h =>
               <> {h.general}  <br /><br /></>
             )}
           </Text>
-          {/* {history == undefined ? <Text>Este paciente no tiene Entradas </Text> : history.map(h => <p key={h._id}>{h.general}</p>)} */}
         </Box>
       </Flex>
       <Footer />
