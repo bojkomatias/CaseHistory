@@ -66,17 +66,16 @@ const PacientTable = ({ patients }) => {
             setSearchResults(resultsSort);
         }
     }, [searchTerm, localPatients, sortedField, sortDirection]);
-
     return (
-        <Flex h='100vh' width='100%' justifyContent='center'>
-            <Stack width={{ xl: '80%', lg: 'full' }} mt={20} >
+        <Flex h='100vh' justifyContent='center'>
+            <Stack width={{ xl: '80%', lg: '90%', base: 'full' }} mt={20} >
                 <Stack direction='row' alignItems='center'>
                     <InputGroup>
-                        <InputLeftElement mx={1} h={[6, 8, 12]}
+                        <InputLeftElement h={[8, 10, 12]}
                             pointerEvents="none"
                             children={<SearchIcon h={[3, 4, 4, 6]} w={[3, 4, 4, 6]} color="gray.600" />}
                         />
-                        <Input textAlign='center' h={[6, 8, 12]} fontSize={{ xl: 'xl', lg: 'lg', md: 'sm' }} placeholder="Apellido, Nombre, DNI, ..." value={searchTerm} onChange={handleChange} />
+                        <Input textAlign='center' h={[8, 10, 12]} fontSize={{ xl: 'xl', lg: 'lg', md: 'sm' }} placeholder="Apellido, Nombre, DNI, ..." value={searchTerm} onChange={handleChange} />
                     </InputGroup>
                     <NewPacient setLocalPatients={setLocalPatients} />
                 </Stack>
@@ -86,33 +85,33 @@ const PacientTable = ({ patients }) => {
                             <Th cursor='pointer' onClick={() => {
                                 setSortedField('apellido')
                                 setSortDirection(prev => !prev)
-                            }}> <Text fontStyle='italic' fontSize={{ base: 'md', md: 'sm', sm: 'xs' }}>Paciente {sortedField === 'apellido' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
+                            }}> <Text fontStyle='italic'>Paciente {sortedField === 'apellido' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
                             <Th cursor='pointer' onClick={() => {
                                 setSortedField('dni')
                                 setSortDirection(prev => !prev)
-                            }}><Text fontStyle='italic' fontSize='sm'>DNI {sortedField === 'dni' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
-                            <Th cursor='pointer' onClick={() => {
+                            }}><Text fontStyle='italic' >DNI {sortedField === 'dni' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
+                            <Th hidden={window.screen.width < 460 ? true : false} cursor='pointer' onClick={() => {
                                 setSortedField('createdAt')
                                 setSortDirection(prev => !prev)
-                            }}><Text fontStyle='italic' fontSize='sm'>Creado {sortedField === 'createdAt' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
-                            <Th isNumeric><Text fontStyle='italic' fontSize='sm'>Opciones</Text></Th>
+                            }}><Text fontStyle='italic'>Creado {sortedField === 'createdAt' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
+                            <Th isNumeric><Text fontStyle='italic'>Opciones</Text></Th>
 
                         </Tr>
                     </Thead>
                     <Tbody>
                         {searchResults.map(p =>
                             <Tr key={p._id}>
-                                <Td >{p.apellido}, {p.nombre}</Td>
+                                <Td>{p.apellido}, {p.nombre}</Td>
                                 <Td>{p.dni}</Td>
-                                <Td>{p.createdAt}</Td>
+                                <Td hidden={window.screen.width < 460 ? true : false}>{p.createdAt}</Td>
                                 <Td isNumeric>
                                     <NewPacient setLocalPatients={setLocalPatients} existingPatient={p} />
                                     <IconButton
-                                        mx={1}
+                                        mr={1}
                                         variant="outline"
                                         colorScheme="teal"
                                         title='Ver Historia Clinica'
-                                        w={[6, 8, 12]}
+                                        w={[4, 8, 12]}
                                         h={[6, 8, 12]}
                                         icon={<CopyIcon w={[4, 6]}
                                             h={[4, 6]} />}

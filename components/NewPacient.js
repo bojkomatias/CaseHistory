@@ -75,11 +75,10 @@ const NewPacient = ({ setLocalPatients, existingPatient }) => {
             {existingPatient == undefined ? <IconButton
                 onClick={onOpen}
                 justifySelf='end'
-                mx={[1]}
                 variant="outline"
                 colorScheme="teal"
                 title='Crear Nuevo Paciente'
-                w={[6, 8, 12]}
+                w={[4, 8, 12]}
                 h={[6, 8, 12]}
                 icon={<AddIcon w={[4, 6]}
                     h={[4, 6]} />}
@@ -89,7 +88,7 @@ const NewPacient = ({ setLocalPatients, existingPatient }) => {
                 variant="outline"
                 colorScheme="teal"
                 title='Editar Datos'
-                w={[6, 8, 12]}
+                w={[4, 8, 12]}
                 h={[6, 8, 12]}
                 icon={<EditIcon w={[4, 6]}
                     h={[4, 6]} />}

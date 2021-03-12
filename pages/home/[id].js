@@ -20,9 +20,9 @@ const Homepage = ({ patients }) => {
     <Box h='100vh' bgGradient={useColorModeValue('radial(white,gray.100)', 'radial(gray.700,gray.800)')}>
 
       <Header />
-      <Container h='85vh' minW="100%" overflow='auto'>
+      <Box h='90vh' overflow='auto' >
         <PacientTable patients={patients} />
-      </Container>
+      </Box>
       <Spacer />
       <Footer />
 
