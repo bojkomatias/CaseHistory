@@ -68,7 +68,7 @@ const PacientTable = ({ patients }) => {
     }, [searchTerm, localPatients, sortedField, sortDirection]);
     return (
         <Flex h='100vh' justifyContent='center'>
-            <Stack width={{ xl: '80%', lg: '90%', base: 'full' }} mt={20} >
+            <Stack width={{ xl: '80%', lg: '85%', base: '90%', md: '95%', sm: '98%' }} mt={20} >
                 <Stack direction='row' alignItems='center'>
                     <InputGroup>
                         <InputLeftElement h={[8, 10, 12]}
@@ -79,7 +79,7 @@ const PacientTable = ({ patients }) => {
                     </InputGroup>
                     <NewPacient setLocalPatients={setLocalPatients} />
                 </Stack>
-                <Table>
+                <Table >
                     <Thead>
                         <Tr>
                             <Th cursor='pointer' onClick={() => {
@@ -90,7 +90,7 @@ const PacientTable = ({ patients }) => {
                                 setSortedField('dni')
                                 setSortDirection(prev => !prev)
                             }}><Text fontStyle='italic' >DNI {sortedField === 'dni' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
-                            <Th hidden={window.screen.width < 460 ? true : false} cursor='pointer' onClick={() => {
+                            <Th cursor='pointer' onClick={() => {
                                 setSortedField('createdAt')
                                 setSortDirection(prev => !prev)
                             }}><Text fontStyle='italic'>Creado {sortedField === 'createdAt' ? sortDirection ? <ChevronDownIcon color='teal' fontSize='xl' /> : <ChevronUpIcon color='teal' fontSize='xl' /> : null}</Text></Th>
@@ -103,7 +103,7 @@ const PacientTable = ({ patients }) => {
                             <Tr key={p._id}>
                                 <Td>{p.apellido}, {p.nombre}</Td>
                                 <Td>{p.dni}</Td>
-                                <Td hidden={window.screen.width < 460 ? true : false}>{p.createdAt}</Td>
+                                <Td>{p.createdAt.substr(0, 10)}</Td>
                                 <Td isNumeric>
                                     <NewPacient setLocalPatients={setLocalPatients} existingPatient={p} />
                                     <IconButton

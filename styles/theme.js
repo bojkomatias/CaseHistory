@@ -11,7 +11,7 @@ const theme = extendTheme({
   styles: {
     global: {
       "html, body": {
-        fontSize: ["xs", "sm", "md", "lg"],
+        fontSize: ["xx-small", "sm", "md", "lg"],
       },
     },
   },
